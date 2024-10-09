@@ -4,5 +4,6 @@
 <configuration>
     <typeAliases>
         <typeAlias type="com.example.exam.model.BoardDTO" alias="boardDTO"/>
+        <typeAlias type="com.example.exam.model.FestivalDTO" alias="FestivalDTO"/>
     </typeAliases>
 </configuration>

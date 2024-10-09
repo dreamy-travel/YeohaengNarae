@@ -1,70 +1,49 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios from 'axios'; // axios import
 
 function App() {
-  const [hidata, setHello] = useState("");
-  const [boardList, setBoardList] = useState([]);
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  
+  const [festivals, setFestivals] = useState(null); // 초기 상태를 null로 설정
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/api/hello")
-      .then((response) => setHello(response.data))
-      .catch((error) => console.log(error));
+    // axios를 사용하여 데이터 가져오기
+    axios.get('http://localhost:8080/api/festivals')
+      .then(response => {
+        setFestivals(response.data); // axios에서 응답 데이터는 response.data에 있음
+      })
+      .catch(error => {
+        console.error('Error fetching festival data: ', error);
+        setError(error);
+      });
   }, []);
 
-  const fetchBoardList = () => {
-    axios
-      .get("http://localhost:8080/api/boardList")
-      .then((response) => setBoardList(response.data))
-      .catch((error) => console.log(error));
-  };
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
 
-  const handleRegister = () => {
-    const newBoard = { title, content };
-    axios
-      .post("http://localhost:8080/api/setBoard", newBoard)
-      .then((response) => {
-        setBoardList([...boardList, response.data]);
-        setTitle("");
-        setContent("");
-      })
-      .catch((error) => console.log(error));
-  };
+  // festivals가 null이거나 구조가 예상과 다를 경우를 처리
+  if (!festivals || !festivals.response || !festivals.response.body || !festivals.response.body.items) {
+    return <p>Loading festival data...</p>; // 데이터가 로드되지 않았을 경우 로딩 메시지 표시
+  }
+
+  const items = festivals.response.body.items.item; // items 배열을 가져옴
 
   return (
     <div>
-      백엔드 스프링 부트 데이터 : {hidata}
-      <br />
-      <input
-        type="button"
-        value="리스트펼치기"
-        onClick={fetchBoardList}
-      ></input>
-      <ul>
-        {boardList.map((post) => (
-          <li key={post.id}>
-            {post.title} - {post.content}
-          </li>
-        ))}
-      </ul>
-      <div>
-        <input
-          type="text"
-          placeholder="제목"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="내용"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-        <input type="button" value="등록" onClick={handleRegister} />
-      </div>
+      <h1>Festival List</h1>
+      {items.map((item, index) => (
+        <div key={index}>
+          <p><strong>Title:</strong> {item.title}</p>
+          <p><strong>Address:</strong> {item.addr1}</p>
+          <p><strong>ContentTId:</strong> {item.contenttypeid}</p>
+          {item.firstimage && (
+            <p>
+              <strong>Image: </strong>
+              <img src={item.firstimage} alt={item.title} style={{ width: '200px', height: 'auto', marginTop: '10px' }} />
+            </p>
+          )}
+        </div>
+      ))}
     </div>
   );
 }

@@ -25,8 +25,12 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web-services'
+<<<<<<< Updated upstream
+=======
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+>>>>>>> Stashed changes
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -37,6 +41,7 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
 def frontendDir = "$projectDir/src/main/reactfront"
 
 sourceSets {
@@ -77,4 +82,3 @@ task copyReactBuildFiles(type: Copy) {
 	from "$frontendDir/build"
 	into "$projectDir/src/main/resources/static"
 }
-
