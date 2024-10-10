@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios'; // axios import
+import './App.css'; // CSS 파일 추가
 
 function App() {
   const [festivals, setFestivals] = useState(null); // 초기 상태를 null로 설정
   const [error, setError] = useState(null);
+  const [selectedFestival, setSelectedFestival] = useState(null); // 선택된 축제 상태
 
   useEffect(() => {
     // axios를 사용하여 데이터 가져오기
@@ -28,22 +30,39 @@ function App() {
 
   const items = festivals.response.body.items.item; // items 배열을 가져옴
 
+  const handleFestivalClick = (item) => {
+    setSelectedFestival(item); // 클릭한 축제 정보를 상태에 저장
+  };
+
+  const closePopup = () => {
+    setSelectedFestival(null); // 팝업 닫기
+  };
+
   return (
-    <div>
-      <h1>Festival List</h1>
-      {items.map((item, index) => (
-        <div key={index}>
-          <p><strong>Title:</strong> {item.title}</p>
-          <p><strong>Address:</strong> {item.addr1}</p>
-          <p><strong>ContentTId:</strong> {item.contenttypeid}</p>
-          {item.firstimage && (
-            <p>
-              <strong>Image: </strong>
-              <img src={item.firstimage} alt={item.title} style={{ width: '200px', height: 'auto', marginTop: '10px' }} />
-            </p>
-          )}
+    <div className="app-container">
+      <div className="festival-list">
+        <h1>Festival List</h1>
+        <div className="festival-grid">
+          {items.map((item, index) => (
+            <div key={index} className="festival-item" onClick={() => handleFestivalClick(item)}>
+              <img src={item.firstimage} alt={item.title} className="festival-image" />
+              <p><strong>Title:</strong> {item.title}</p>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
+
+      {selectedFestival && (
+        <div className="popup">
+          <div className="popup-content">
+            <span className="close" onClick={closePopup}>&times;</span>
+            <h2>{selectedFestival.title}</h2>
+            <p><strong>Address:</strong> {selectedFestival.addr1}</p>
+            <p><strong>Tel:</strong> {selectedFestival.tel}</p>
+            <img src={selectedFestival.firstimage} alt={selectedFestival.title} className="popup-image" />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
