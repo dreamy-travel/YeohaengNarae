@@ -1,70 +1,41 @@
-import React, { useEffect, useState } from "react";
-import axios from 'axios'; // axios import
-import './App.css'; // CSS 파일 추가
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Home from './components/Home';
+import Resume from './components/Resume';
+import Projects from './components/Projects';
+import Contact from './components/Contact';
+import Festival from './components/Festival';
+import Chat from './components/Chat';
+import './styles.css';
 
-function App() {
-  const [festivals, setFestivals] = useState(null); // 초기 상태를 null로 설정
-  const [error, setError] = useState(null);
-  const [selectedFestival, setSelectedFestival] = useState(null); // 선택된 축제 상태
+const App = () => {
+  return (
+    <Router>
+      <MainContent />
+    </Router>
+  );
+};
 
-  useEffect(() => {
-    // axios를 사용하여 데이터 가져오기
-    axios.get('http://localhost:8080/api/festivals')
-      .then(response => {
-        setFestivals(response.data); // axios에서 응답 데이터는 response.data에 있음
-      })
-      .catch(error => {
-        console.error('Error fetching festival data: ', error);
-        setError(error);
-      });
-  }, []);
-
-  if (error) {
-    return <p>Error: {error.message}</p>;
-  }
-
-  // festivals가 null이거나 구조가 예상과 다를 경우를 처리
-  if (!festivals || !festivals.response || !festivals.response.body || !festivals.response.body.items) {
-    return <p>Loading festival data...</p>; // 데이터가 로드되지 않았을 경우 로딩 메시지 표시
-  }
-
-  const items = festivals.response.body.items.item; // items 배열을 가져옴
-
-  const handleFestivalClick = (item) => {
-    setSelectedFestival(item); // 클릭한 축제 정보를 상태에 저장
-  };
-
-  const closePopup = () => {
-    setSelectedFestival(null); // 팝업 닫기
-  };
+const MainContent = () => {
+  const location = useLocation();
+  const isHome = location.pathname === '/';
 
   return (
-    <div className="app-container">
-      <div className="festival-list">
-        <h1>Festival List</h1>
-        <div className="festival-grid">
-          {items.map((item, index) => (
-            <div key={index} className="festival-item" onClick={() => handleFestivalClick(item)}>
-              <img src={item.firstimage} alt={item.title} className="festival-image" />
-              <p><strong>Title:</strong> {item.title}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {selectedFestival && (
-        <div className="popup">
-          <div className="popup-content">
-            <span className="close" onClick={closePopup}>&times;</span>
-            <h2>{selectedFestival.title}</h2>
-            <p><strong>Address:</strong> {selectedFestival.addr1}</p>
-            <p><strong>Tel:</strong> {selectedFestival.tel}</p>
-            <img src={selectedFestival.firstimage} alt={selectedFestival.title} className="popup-image" />
-          </div>
-        </div>
-      )}
-    </div>
+    <>
+      {!isHome && <Header />}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/resume" element={<Resume />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/festival" element={<Festival />} />
+        <Route path="/chat" element={<Chat />} />
+      </Routes>
+      {!isHome && <Footer />}
+    </>
   );
-}
+};
 
 export default App;

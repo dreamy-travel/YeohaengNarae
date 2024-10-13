@@ -39,13 +39,13 @@
 
 .app-container {
   display: flex; /* 플렉스 박스 레이아웃 사용 */
-  height: 100vh; /* 전체 높이를 100%로 설정 */
+  height: auto; /* 높이를 자동으로 설정하여 전체 화면 스크롤 가능 */
 }
 
 .festival-list {
-  flex: 8; /* 8 비율 */
+  flex: 1; /* 비율을 1로 설정하여 공간을 차지하도록 함 */
   padding: 20px; /* 패딩 추가 */
-  overflow-y: auto; /* 내용이 넘칠 경우 스크롤 가능 */
+  /* overflow-y: auto; */ /* 스크롤 제거 */
 }
 
 .popup {
@@ -68,7 +68,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
-  max-width: 1200px; /* 전체 넓이를 1000px로 설정 */
+  max-width: 1200px; /* 전체 넓이를 1200px로 설정 */
   margin: 0 auto; /* 중앙 정렬 */
 }
 
