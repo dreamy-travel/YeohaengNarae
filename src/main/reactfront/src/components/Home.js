@@ -4,7 +4,7 @@ import '../styles.css';
 const Home = () => {
     return (
         <>
-        <nav id="mainNav" className="navbar navbar-expand-lg navbar-light py-3">
+        <nav className="navbar navbar-expand-lg navbar-light bg-white py-3">
             <div className="container px-5">
                 <a className="navbar-brand" href="/"><span className="fw-bolder text-primary">YeohaengNarae</span></a>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

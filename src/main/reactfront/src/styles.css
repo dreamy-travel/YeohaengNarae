@@ -79,36 +79,15 @@
   --bs-highlight-bg: #fff3cd;
 }
 
-/* src/main/reactfront/src/styles.css */
-.home-nav {
-  background-color: transparent; /* 배경을 투명하게 설정 */
-  color: white; /* 글자색을 흰색으로 설정 */
-}
-
-.home-nav .navbar-brand,
-.home-nav .navbar-nav .nav-item .nav-link {
-  color: white; /* 글자색을 흰색으로 설정 */
-}
-
-.home-nav.scrolled {
-  background-color: #fff; /* 스크롤 시 배경색 흰색 */
-  color: #212529; /* 글자색 어두운 색 */
-}
-
-.home-nav.scrolled .navbar-brand,
-.home-nav.scrolled .navbar-nav .nav-item .nav-link {
-  color: #212529; /* 스크롤 시 글자색 어두운 색 */
-}
-
 header.masthead {
   padding-top: 10rem;
   padding-bottom: calc(10rem - 4.5rem);
-  background: linear-gradient(to bottom, rgba(92, 77, 66, 0.3) 0%, rgba(92, 77, 66, 0.5) 100%), url("../public/assets/bg.jpg");
+  background: linear-gradient(to bottom, rgba(92, 77, 66, 0.3) 0%, rgba(92, 77, 66, 0.5) 100%), url("../public/bg.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-size: cover;
-  height: 100vh; /* 전체 화면 높이 설정 */
+  height: 92vh; /* 전체 화면 높이 설정 */
 }
 
 *,

@@ -1,12 +1,12 @@
 import '../App.css';
 import axios from "axios";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Stomp } from "@stomp/stompjs";
 
 function Chat() {
   const stompClient = useRef(null);
   // 채팅 내용들을 저장할 변수
-  const [messages, setMessages] = new useState([]);
+  const [messages, setMessages] = useState([]);
   // 사용자 입력을 저장할 변수
   const [inputValue, setInputValue] = useState('');
   // 입력 필드에 변화가 있을 때마다 inputValue를 업데이트
@@ -15,7 +15,7 @@ function Chat() {
   };
 
   // 웹소켓 연결 설정
-  const connect = () => {
+  const connect = useCallback(() => {
     const socket = new WebSocket("ws://localhost:8080/ws");
     stompClient.current = Stomp.over(socket);
     stompClient.current.connect({}, () => {
@@ -24,25 +24,26 @@ function Chat() {
         setMessages((prevMessages) => [...prevMessages, newMessage]);
       });
     });
-  };
+  }, []); // 빈 배열을 의존성으로 사용하여 한 번만 실행
+
   // 웹소켓 연결 해제
-  const disconnect = () => {
+  const disconnect = useCallback(() => {
     if (stompClient.current) {
       stompClient.current.disconnect();
     }
-  };
+  }, []);
+
   // 기존 채팅 메시지를 서버로부터 가져오는 함수
-  const fetchMessages = () => {
+  const fetchMessages = useCallback(() => {
     return axios.get("http://localhost:8080/chat/1")
       .then(response => { setMessages(response.data) });
+  }, []);
 
-  };
   useEffect(() => {
     connect();
     fetchMessages();
-    // 컴포넌트 언마운트 시 웹소켓 연결 해제
-    return () => disconnect();
-  }, []);
+    return () => disconnect(); // disconnect를 의존성 배열에 추가
+  }, [connect, fetchMessages, disconnect]); // disconnect를 의존성 배열에 추가
 
   //메세지 전송
   const sendMessage = () => {
