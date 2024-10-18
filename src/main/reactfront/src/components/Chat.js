@@ -39,7 +39,7 @@ function Chat() {
       .then(response => { setMessages(response.data) });
   }, []);
 
-  useEffect(() => {
+  useEffect(() => { 
     connect();
     fetchMessages();
     return () => disconnect(); // disconnect를 의존성 배열에 추가

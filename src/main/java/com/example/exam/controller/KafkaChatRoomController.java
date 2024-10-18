@@ -2,20 +2,17 @@ package com.example.exam.controller;
 
 import com.example.exam.model.KafkaChatRoom;
 import com.example.exam.repository.KafkaChatRoomRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/kafkachat")
 public class KafkaChatRoomController {
     private final KafkaChatRoomRepository chatRoomRepository;
-
-    public KafkaChatRoomController(KafkaChatRoomRepository chatRoomRepository) {
-        this.chatRoomRepository = chatRoomRepository;
-    }
 
     @GetMapping("/room")
     public String rooms(Model model) {
